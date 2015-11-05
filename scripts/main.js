@@ -26,6 +26,19 @@ var App = React.createClass({
       context: this,
       state: 'fishes'
     });
+    var sessionStorageRef =
+      sessionStorage.getItem('order-'+ this.props.params.storeId);
+
+    if(sessionStorageRef) {
+      // update our component state to reflect what is in sessionStorage
+      this.setState({
+        order: JSON.parse(sessionStorageRef)
+      });
+    }
+  },
+  componentWillUpdate(nextProps, nextState) {
+    sessionStorage.setItem('order-'+ this.props.params.storeId,
+      JSON.stringify(nextState.order));
   },
   addToOrder(key) {
     this.state.order[key] = this.state.order[key] + 1 || 1;
