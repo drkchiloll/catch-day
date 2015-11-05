@@ -105,6 +105,11 @@ var App = React.createClass({
 });
 
 var Fish = React.createClass({
+  propTypes : {
+    details : React.PropTypes.object,
+    index : React.PropTypes.string,
+    addToOrder : React.PropTypes.func
+  },
   addToOrder() {
     var key = this.props.index;
     this.props.addToOrder(key);
@@ -128,6 +133,9 @@ var Fish = React.createClass({
 })
 
 var AddFishForm = React.createClass({
+  propTypes : {
+    addFish : React.PropTypes.func
+  },
   createFish(e) {
     // Stop the Form From Submitting
     e.preventDefault();
@@ -161,6 +169,9 @@ var AddFishForm = React.createClass({
 })
 
 var Header = React.createClass({
+  propTypes: {
+    tagline : React.PropTypes.string.isRequired
+  },
   render() {
     return (
       <header className='top'>
@@ -178,6 +189,11 @@ var Header = React.createClass({
 });
 
 var Order = React.createClass({
+  propTypes : {
+    fishes : React.PropTypes.object,
+    order : React.PropTypes.object,
+    removeFromOrder : React.PropTypes.func
+  },
   renderOrder(key) {
     var fish = this.props.fishes[key];
     var count = this.props.order[key];
@@ -242,6 +258,13 @@ var Order = React.createClass({
 });
 
 var Inventory = React.createClass({
+  propTypes : {
+    addFish : React.PropTypes.func,
+    loadSamples : React.PropTypes.func,
+    removeFish : React.PropTypes.func,
+    linkState : React.PropTypes.func,
+    fishes : React.PropTypes.object
+  },
   renderInventory(key) {
     var linkState = this.props.linkState;
     return (
