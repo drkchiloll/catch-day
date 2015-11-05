@@ -17,6 +17,10 @@ var App = React.createClass({
       order: {}
     };
   },
+  addToOrder(key) {
+    this.state.order[key] = this.state.order[key] + 1 || 1;
+    this.setState({order : this.state.order});
+  },
   addFish(fish) {
     var timestamp = (new Date()).getTime();
     // update the state object
@@ -32,7 +36,11 @@ var App = React.createClass({
   renderFish(key) {
     var fishes = this.state.fishes;
     return (
-      <Fish key={key} index={key} details={fishes[key]}/>
+      <Fish
+        addToOrder={this.addToOrder}
+        key={key}
+        index={key}
+        details={fishes[key]}/>
     );
   },
   render() {
@@ -53,7 +61,8 @@ var App = React.createClass({
 
 var Fish = React.createClass({
   addToOrder() {
-    console.log('going to add the fish:', this.props.index);
+    var key = this.props.index;
+    this.props.addToOrder(key);
   },
   render() {
     var details = this.props.details;
