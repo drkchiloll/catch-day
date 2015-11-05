@@ -10,11 +10,14 @@ var React = require('react'),
 var Rebase = require('re-base');
 var base = Rebase.createClass('https://catch-day.firebaseio.com/');
 
+var Catalyst = require('react-catalyst');
+
 var history = History();
 
 var h = require('./helpers');
 
 var App = React.createClass({
+  mixins: [Catalyst.LinkedStateMixin],
   getInitialState() {
     return {
       fishes: {},
@@ -44,12 +47,22 @@ var App = React.createClass({
     this.state.order[key] = this.state.order[key] + 1 || 1;
     this.setState({order : this.state.order});
   },
+  removeFromOrder(key) {
+    delete this.state.order[key];
+    this.setState({ order: this.state.order });
+  },
   addFish(fish) {
     var timestamp = (new Date()).getTime();
     // update the state object
     this.state.fishes['fish-'+ timestamp] = fish;
     // set the state
     this.setState({fishes : this.state.fishes});
+  },
+  removeFish(key, e) {
+    e.preventDefault();
+    if(confirm('Are you sure you want to remove this fish?!'));
+    this.state.fishes[key] = null;
+    this.setState({ fishes: this.state.fishes });
   },
   loadSamples() {
     this.setState({
@@ -75,8 +88,16 @@ var App = React.createClass({
             {Object.keys(this.state.fishes).map(this.renderFish)}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order}/>
-        <Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
+        <Order
+          fishes={this.state.fishes}
+          order={this.state.order}
+          removeFromOrder={this.removeFromOrder}/>
+        <Inventory
+          fishes={this.state.fishes}
+          addFish={this.addFish}
+          loadSamples={this.loadSamples}
+          linkState={this.linkState}
+          removeFish={this.removeFish}/>
       </div>
     );
   }
@@ -159,10 +180,14 @@ var Order = React.createClass({
   renderOrder(key) {
     var fish = this.props.fishes[key];
     var count = this.props.order[key];
-
+    var removeBtn = (
+      <button onClick={this.props.removeFromOrder.bind(null, key)}>
+        &times;
+      </button>
+    );
     if(!fish) {
       return (
-        <li key={key}>Sorry, fish no longer available!</li>
+        <li key={key}>Sorry, fish no longer available! {removeBtn}</li>
       );
     }
     return (
@@ -170,6 +195,7 @@ var Order = React.createClass({
         {count}lbs
         {fish.name}
         <span className='price'>{h.formatPrice(count * fish.price)}</span>
+        {removeBtn}
       </li>
     );
   },
@@ -201,10 +227,27 @@ var Order = React.createClass({
 });
 
 var Inventory = React.createClass({
+  renderInventory(key) {
+    var linkState = this.props.linkState;
+    return (
+      <form key={key} ref='fishForm' className='fish-edit' onSubmit={this.props.removeFish.bind(null, key)}>
+        <input type='text' valueLink={linkState('fishes.'+ key +'.name')}/>
+        <input type='text' valueLink={linkState('fishes.'+ key +'.price')}/>
+        <select valueLink={linkState('fishes.'+ key +'.status')}>
+          <option value='available'>Fresh!</option>
+          <option value='unavailable'>Sold Out!</option>
+        </select>
+        <textarea type='text' valueLink={linkState('fishes.'+ key +'.desc')}></textarea>
+        <input type='text' valueLink={linkState('fishes.'+ key +'.image')} />
+        <button type='submit'>Remove Fish</button>
+      </form>
+    );
+  },
   render() {
     return (
       <div>
         <h2>Inventory</h2>
+        {Object.keys(this.props.fishes).map(this.renderInventory)}
         <AddFishForm addFish={this.props.addFish}/>
         <button onClick={this.props.loadSamples}> Load Sample Fishes</button>
       </div>
