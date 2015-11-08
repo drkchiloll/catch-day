@@ -1,14 +1,9 @@
 import React from 'react';
+import autobind from 'autobind-decorator';
 
+@autobind
 export default class AddFishForm extends React.Component {
-  constructor() {
-    super();
-    this.createFish = this.createFish.bind(this);
-  }
-  propTypes : {
-    addFish : React.PropTypes.func
-  }
-  createFish(e) {
+createFish(e) {
     // Stop the Form From Submitting
     e.preventDefault();
     // Take the Data From the Form and Create an Object
@@ -39,3 +34,7 @@ export default class AddFishForm extends React.Component {
     );
   }
 }
+
+AddFishForm.propTypes = {
+  addFish : React.PropTypes.func
+};

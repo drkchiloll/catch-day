@@ -1,18 +1,10 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
+import autobind from 'autobind-decorator';
 import h from '../helpers';
 
+@autobind
 export default class Order extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.renderOrder = this.renderOrder.bind(this);
-  }
-  propTypes : {
-    fishes : React.PropTypes.object,
-    order : React.PropTypes.object,
-    removeFromOrder : React.PropTypes.func
-  }
   renderOrder(key) {
     var fish = this.props.fishes[key];
     var count = this.props.order[key];
@@ -75,3 +67,9 @@ export default class Order extends React.Component {
     );
   }
 }
+
+Order.propTypes = {
+  fishes : React.PropTypes.object,
+  order : React.PropTypes.object,
+  removeFromOrder : React.PropTypes.func
+};

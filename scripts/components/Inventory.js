@@ -1,19 +1,9 @@
 import React from 'react';
 import AddFishForm from './AddFishForm';
+import autobind from 'autobind-decorator';
 
+@autobind
 export default class Inventory extends React.Component {
-  constructor() {
-    super();
-
-    this.renderInventory = this.renderInventory.bind(this);
-  }
-  propTypes : {
-    addFish : React.PropTypes.func,
-    loadSamples : React.PropTypes.func,
-    removeFish : React.PropTypes.func,
-    linkState : React.PropTypes.func,
-    fishes : React.PropTypes.object
-  }
   renderInventory(key) {
     var linkState = this.props.linkState;
     return (
@@ -41,3 +31,11 @@ export default class Inventory extends React.Component {
     );
   }
 }
+
+Inventory.propTypes = {
+  addFish : React.PropTypes.func,
+  loadSamples : React.PropTypes.func,
+  removeFish : React.PropTypes.func,
+  linkState : React.PropTypes.func,
+  fishes : React.PropTypes.object
+};

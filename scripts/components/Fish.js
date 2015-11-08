@@ -7,11 +7,6 @@ export default class Fish extends React.Component {
 
     this.addToOrder = this.addToOrder.bind(this);
   }
-  propTypes : {
-    details : React.PropTypes.object,
-    index : React.PropTypes.string,
-    addToOrder : React.PropTypes.func
-  }
   addToOrder() {
     var key = this.props.index;
     this.props.addToOrder(key);
@@ -33,3 +28,9 @@ export default class Fish extends React.Component {
     );
   }
 }
+
+Fish.propTypes = {
+  details : React.PropTypes.object,
+  index : React.PropTypes.string,
+  addToOrder : React.PropTypes.func
+};

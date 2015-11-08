@@ -1,17 +1,18 @@
 import React from 'react';
 import { History as RouteHistory } from 'react-router';
+import reactMixin from 'react-mixin';
+import autobind from 'autobind-decorator';
 import h from '../helpers';
 
-var StorePicker = React.createClass({
-  displayName : 'StorePicker',
-  mixins : [RouteHistory],
+@autobind
+export default class StorePicker extends React.Component {
   goToStore(e) {
     e.preventDefault();
     // Get the Data From the Input
     var storeId = this.refs.storeId.value;
     this.history.pushState(null, '/store/' + storeId);
     // Transition From StorePicker to App
-  },
+  }
   render() {
     return (
       <form onSubmit={this.goToStore} className='store-selector'>
@@ -26,6 +27,6 @@ var StorePicker = React.createClass({
       </form>
     );
   }
-});
+}
 
-export default StorePicker;
+reactMixin.onClass(StorePicker, RouteHistory);
