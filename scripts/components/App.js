@@ -7,8 +7,6 @@ let base = Rebase.createClass('https://catch-day.firebaseio.com/');
 /*
   Pull in all Components Used
 */
-import NotFound from './NotFound';
-import StorePicker from './StorePicker';
 import Header from './Header';
 import Fish from './Fish';
 import Inventory from './Inventory';
