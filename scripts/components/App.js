@@ -93,6 +93,7 @@ export default class App extends React.Component {
           order={this.state.order}
           removeFromOrder={this.removeFromOrder}/>
         <Inventory
+          {...this.props}
           fishes={this.state.fishes}
           addFish={this.addFish}
           loadSamples={this.loadSamples}
